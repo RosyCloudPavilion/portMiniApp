@@ -1,0 +1,12 @@
+<view>
+  <p class="head">企业包打听</p>
+  <p class="summary">为企业提供全方位的风险预警服务，以可视可互动的形式交互</p>
+</view>
+<view class="block">
+  <van-row wx:for="{{ fits }}" wx:for-item="fit" wx:key="fit" bindtap="bindViewTap">
+    <van-col span="24">
+      <van-image fit="cover" width="27vw" height="27vw" src="{{ fit.src }}" />
+      <view class="text">{{ fit.fit }}</view>
+    </van-col>
+  </van-row>
+</view>

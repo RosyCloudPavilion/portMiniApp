@@ -1,0 +1,15 @@
+<scroll-view>
+  <van-collapse value="{{ activeNames }}" bind:change="onChange">
+    <van-collapse-item title="风险合作企业" name="1">
+      <van-cell title="企业名称" value="风险类型及概率" />
+      <van-cell title="{{item[0]}}" value="{{item[1]}}" wx:for="{{ companys }}" />
+    </van-collapse-item>
+    <van-collapse-item title="风险投标项目" name="2">
+      <van-cell title="项目名称" value="风险程度" />
+      <van-cell wx:for="{{ projects }}" title="{{item[0]}}" value="{{item[1]}}" />
+    </van-collapse-item>
+  </van-collapse>
+  <view class="echart">
+    <ec-canvas id="mychart-dom-bar" canvas-id="mychart-bar" ec="{{ ec }}"></ec-canvas>
+  </view>
+</scroll-view>
