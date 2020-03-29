@@ -1,15 +1,88 @@
-<scroll-view>
-  <van-collapse value="{{ activeNames }}" bind:change="onChange">
-    <van-collapse-item title="风险合作企业" name="1">
-      <van-cell title="企业名称" value="风险类型及概率" />
-      <van-cell title="{{item[0]}}" value="{{item[1]}}" wx:for="{{ companys }}" />
-    </van-collapse-item>
-    <van-collapse-item title="风险投标项目" name="2">
-      <van-cell title="项目名称" value="风险程度" />
-      <van-cell wx:for="{{ projects }}" title="{{item[0]}}" value="{{item[1]}}" />
-    </van-collapse-item>
-  </van-collapse>
-  <view class="echart">
-    <ec-canvas id="mychart-dom-bar" canvas-id="mychart-bar" ec="{{ ec }}"></ec-canvas>
-  </view>
-</scroll-view>
+<van-tabs active="{{ active }}" swipeable="true" sticky="true" bind:change="onTab">
+  <van-tab title="风险预警">
+   <scroll-view>
+    <van-collapse value="{{ activeNames }}" bind:change="onChange">
+      <van-collapse-item title="风险合作企业" name="1">
+        <van-cell title="企业名称" value="风险类型及概率" />
+        <van-cell title="{{item[0]}}" value="{{item[1]}}" wx:for="{{ companys }}" />
+      </van-collapse-item>
+      <van-collapse-item title="风险投标项目" name="2">
+        <van-cell title="项目名称" value="风险程度" />
+        <van-cell wx:for="{{ projects }}" title="{{item[0]}}" value="{{item[1]}}" />
+      </van-collapse-item>
+    </van-collapse>
+    <view class="echart">
+      <ec-canvas id="mychart-dom-bar" canvas-id="mychart-bar" ec="{{ ec }}"></ec-canvas>
+    </view>
+  </scroll-view> 
+</van-tab>
+  <van-tab title="基本信息">
+      <van-cell title="企业类型" value="{{basic.USER_TYPE}}" />
+       <van-cell title="生产企业地址" value="{{basic.ADDRESS}}" />
+        <van-cell title="企业名称" value="{{basic.COM_NAME}}" />
+         <van-cell title="工商注册号" value="{{basic.REG_NO}}" />
+          <van-cell title="法人代表" value="{{basic.LAW_PERSON}}" />
+           <van-cell title="注册资本" value="{{basic.REG_CAPITAL}}" />
+            <van-cell title="注册地址" value="{{basic.REG_ADDRESS}}" />
+             <van-cell title="登记机关" value="{{basic.REG_BRANCH}}" />
+              <van-cell title="成立日期" value="{{basic.FOUND_DATE}}" />
+               <van-cell title="经营期限" value="{{basic.VALID_PERIOD}}" />
+                <van-cell title="年报公示状态" value="{{basic.ANNUAL_CHECK}}" />
+  </van-tab>
+  <van-tab title="信誉信息">
+    <van-collapse value="{{ activeBasic }}" bind:change="onChangeBasic">
+      <van-collapse-item title="信息可信度" name="1">
+        <van-cell title="溯源性">
+          <view>
+            <van-rate readonly value="{{ credit.STAFF }}"/>
+          </view>
+        </van-cell>
+        <van-cell title="完整性">
+          <view>
+            <van-rate readonly value="{{ credit.COMPLETENESS }}"/>
+          </view>
+        </van-cell>
+        <van-cell title="时效性">
+          <view>
+            <van-rate readonly value="{{ credit.TIMELINESS }}"/>
+          </view>
+        </van-cell>
+        <van-cell title="权威性">
+          <view>
+            <van-rate readonly value="{{ credit.AUTHORITY }}"/>
+          </view>
+        </van-cell>
+      </van-collapse-item>
+      <van-collapse-item title="企业美誉度" name="2">
+        <van-cell title="品牌形象">
+          <view>
+            <van-rate color="#2d8cf0"
+              void-color="#c7c7c7" icon="diamond"
+              void-icon="diamond-o" readonly value="{{ credit.BRAND }}"/>
+          </view>
+        </van-cell>
+        <van-cell title="企业荣誉">
+          <view>
+            <van-rate color="#2d8cf0"
+              void-color="#c7c7c7" icon="diamond"
+              void-icon="diamond-o" readonly value="{{ credit.REPUTATION }}"/>
+          </view>
+        </van-cell>
+        <van-cell title="企业信誉">
+          <view>
+            <van-rate color="#2d8cf0"
+              void-color="#c7c7c7" icon="diamond"
+              void-icon="diamond-o" readonly value="{{ credit.TRUST }}"/>
+          </view>
+        </van-cell>
+        <van-cell title="违规情况">
+          <view>
+            <van-rate color="#2d8cf0"
+              void-color="#c7c7c7" icon="diamond"
+              void-icon="diamond-o" readonly value="{{ credit.VIOLATION }}"/>
+          </view>
+        </van-cell>
+      </van-collapse-item>
+    </van-collapse>
+  </van-tab>
+</van-tabs>

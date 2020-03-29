@@ -27,3 +27,18 @@
   color: gray;
   display: block;
 }
+
+.price{
+  color: black;
+  display: inline-block;
+}
+
+.num{
+  float: right;
+  font-size: 35rpx;
+}
+
+.card{
+  margin-top: 40rpx;
+  display: block;
+}

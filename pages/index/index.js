@@ -4,26 +4,41 @@ const app = getApp()
 
 Page({
   data: {
-    fits: [{
-      fit: '优优汇联',
-      src: 'https://markdown-pic-blackboxo.oss-cn-shanghai.aliyuncs.com/yyhl.jpg'
-    }, {
-      fit: '上海晨鸟',
-      src: 'https://markdown-pic-blackboxo.oss-cn-shanghai.aliyuncs.com/chenniao.png'
-    },
-    {
-      fit: '敬请期待',
-      src: 'https://markdown-pic-blackboxo.oss-cn-shanghai.aliyuncs.com/下载.jpg'
-    }],
+    comps: [],
+    defaultComp:
+      {
+      short_name: '敬请期待',
+      img: 'https://markdown-pic-blackboxo.oss-cn-shanghai.aliyuncs.com/下载.jpg',
+      desc: '更多企业风险预警案例敬请期待',
+      risk: '',
+    }
   },
   //事件处理函数
-  bindViewTap: function () {
-    wx.navigateTo({
-      url: '../graph/graph'
-    })
+  bindViewTap: function (e) {
+    if (e.target.dataset.id){
+      wx.navigateTo({
+        url: '../graph/graph?recordNo=' + e.target.dataset.id
+      })
+    }
   },
   onLoad: function () {
-
+    this.getCompany();
   },
+
+  getCompany:function(){
+    var _this=this;
+    wx.request({
+      url: 'https://www.mylittlefox.art/api/EDU/getCompany/',
+      header: {
+        'content-type': 'application/json' // 默认值
+      },
+      success(res) {
+        res.data.comps.push(_this.data.defaultComp);
+        _this.setData({
+          comps: res.data.comps,
+        })
+      }
+    })
+  }
 
 })
