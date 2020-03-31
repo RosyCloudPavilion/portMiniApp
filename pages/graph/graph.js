@@ -99,9 +99,24 @@ Page({
 
   onLoad: function (option) {
     var _this = this;
-    if (option.recordNo =="E350203201708151521"){
+      setTimeout(function(){
+        wx.request({
+          url: 'https://www.mylittlefox.art/api/EDU/getNodesAndLinksById?id=' + option.id,
+          header: {
+            'content-type': 'application/json' // 默认值
+          },
+          success(res) {
+            const graph = res.data;
+            options.series[0].data = graph.nodes;
+            options.series[0].links = graph.links;
+            chart.setOption(options);
+          }
+        });
+      },1000)
+      
+    if (option.recordno){
       wx.request({
-        url: 'https://www.mylittlefox.art/api/EDU/getRiskByCompany?recordNo=' + option.recordNo,
+        url: 'https://www.mylittlefox.art/api/EDU/getRiskByCompany?recordNo=' + option.recordno,
         header: {
           'content-type': 'application/json' // 默认值
         },
@@ -112,22 +127,8 @@ Page({
           })
         }
       })
-      wx.request({
-        url: 'https://www.mylittlefox.art/api/EDU/getAllNodesAndLinks?recordNo=' + option.recordNo,
-        header: {
-          'content-type': 'application/json' // 默认值
-        },
-        success(res) {
-          const graph = res.data;
-          options.series[0].data= graph.nodes;
-          options.series[0].links = graph.links;
-          chart.setOption(options);
-        }
-      });
-    }
-    if (option.recordNo){
     wx.request({
-      url: 'https://www.mylittlefox.art/v1/enterpriseCredit/' + option.recordNo,
+      url: 'https://www.mylittlefox.art/v1/enterpriseCredit/' + option.recordno,
       header: {
         'content-type': 'application/json' // 默认值
       },
@@ -138,7 +139,7 @@ Page({
       }
     })
     wx.request({
-      url: 'https://www.mylittlefox.art/v1/enterprises/' + option.recordNo,
+      url: 'https://www.mylittlefox.art/v1/enterprises/' + option.recordno,
       header: {
         'content-type': 'application/json' // 默认值
       },

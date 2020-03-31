@@ -3,7 +3,7 @@
   <p class="summary">为企业提供全方位的风险预警服务，以可视可互动的形式交互</p>
 </view>
 
-<van-card class="card" wx:for="{{ comps }}" wx:for-item="comp" wx:key="id" data-id="{{comp.recordNo}}" bindtap="bindViewTap"
+<van-card class="card" wx:for="{{ comps }}" wx:for-item="comp" wx:key="id" data-recordNo="{{comp.recordNo}}" data-id="{{comp.id}}" bindtap="bindViewTap"
   desc="描述信息"
   title="{{comp.short_name}}"
   desc="{{comp.desc}}"

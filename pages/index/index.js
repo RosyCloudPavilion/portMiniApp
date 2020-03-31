@@ -17,7 +17,7 @@ Page({
   bindViewTap: function (e) {
     if (e.target.dataset.id){
       wx.navigateTo({
-        url: '../graph/graph?recordNo=' + e.target.dataset.id
+        url: '../graph/graph?recordNo=' + e.target.dataset.recordNo + '&id=' + e.target.dataset.id
       })
     }
   },
@@ -28,7 +28,7 @@ Page({
   getCompany:function(){
     var _this=this;
     wx.request({
-      url: 'https://www.mylittlefox.art/api/EDU/getCompany/',
+      url: 'https://www.mylittlefox.art/api/EDU/getCompany',
       header: {
         'content-type': 'application/json' // 默认值
       },
