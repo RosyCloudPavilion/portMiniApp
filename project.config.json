@@ -61,6 +61,13 @@
 					"id": -1,
 					"name": "graph",
 					"pathName": "pages/graph/graph",
+					"query": "",
+					"scene": null
+				},
+				{
+					"id": -1,
+					"name": "pages/project/project",
+					"pathName": "pages/project/project",
 					"scene": null
 				}
 			]

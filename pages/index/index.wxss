@@ -11,26 +11,35 @@
   text-align: center;
   margin-top: 40rpx;
 }
+.header{
+  display: flex;
+  justify-content: center; /* 水平居中 */
+  align-items: center;     /* 垂直居中 */
+  padding: 40rpx 0;
+  background-color: #1e50a2; 
+}
 
 .head{
-  padding-left: 50rpx;
-  margin-top: 50rpx;
   font-size: 45rpx;
-  color: gray;
-  display: block;
+  color: white;
+  display: inline-block;
+  margin-left:30rpx;
 }
 
 .summary{
-  padding:0 50rpx;
-  margin-top: 20rpx;
-  font-size: 30rpx;
-  color: gray;
-  display: block;
+  padding:10rpx;
+  font-size: 28rpx;
+  color: white;
+  display: inline-block;
+  text-align: center;
+  width: 400rpx;
+  background-color:#b55233; 
 }
 
 .price{
-  color: black;
+  color: #b55233;
   display: inline-block;
+  font-size: 28rpx;
 }
 
 .num{
@@ -41,4 +50,8 @@
 .card{
   margin-top: 40rpx;
   display: block;
+}
+
+.card_desc{
+  white-space: pre-line;
 }

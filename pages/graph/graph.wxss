@@ -22,3 +22,28 @@ canvas{
     margin-top: 40rpx;
     width: 100%;
 }
+
+.load{
+  height: 100rpx;
+  text-align: center;
+  margin-top: 100rpx;
+}
+
+.price{
+  color: #b55233;
+  display: inline-block;
+  font-size: 28rpx;
+}
+
+.num{
+  float: right;
+  font-size: 35rpx;
+}
+
+.card{
+  display: block;
+}
+
+.card_desc{
+  white-space: pre-line;
+}

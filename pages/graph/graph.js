@@ -4,7 +4,6 @@ var categories = [{ name: "企业" }, { name: "人" }, { name: "风险" }, { nam
 let options = {
   title: {
     text: '风险知识图谱',
-    subtext: 'Default layout',
     top: 'bottom',
     left: 'right'
   },
@@ -72,13 +71,15 @@ Page({
     ec: {
       onInit: initChart
     },
+    loading:true,
     companys: [],
     projects: [],
     activeNames: ['0'],
     credit:[],
     basic:[],
     activeBasic:['1','2'],
-    active: 0
+    active: 0,
+    comp:{}
   },
 
   onChange(event) {
@@ -99,6 +100,15 @@ Page({
 
   onLoad: function (option) {
     var _this = this;
+    wx.getStorage({
+      key: 'companyDetail',
+      success: function (res) {
+        _this.setData({
+          comp:res.data
+        })
+      }
+    })
+
       setTimeout(function(){
         wx.request({
           url: 'https://www.mylittlefox.art/api/EDU/getNodesAndLinksById?id=' + option.id,
@@ -110,25 +120,23 @@ Page({
             options.series[0].data = graph.nodes;
             options.series[0].links = graph.links;
             chart.setOption(options);
+            _this.setData({
+              companys: res.data.riskComp,
+              projects: res.data.riskProject,
+              loading: false
+            })
           }
         });
       },1000)
-      
-    if (option.recordno){
-      wx.request({
-        url: 'https://www.mylittlefox.art/api/EDU/getRiskByCompany?recordNo=' + option.recordno,
-        header: {
-          'content-type': 'application/json' // 默认值
-        },
-        success(res) {
-          _this.setData({
-            companys: res.data.riskComp,
-            projects: res.data.riskProject
-          })
-        }
-      })
+    if (option.recordNo){
+      this.getKexinData(option.recordNo);
+    }
+  },
+
+  getKexinData(recordNo){
+    var _this=this;
     wx.request({
-      url: 'https://www.mylittlefox.art/v1/enterpriseCredit/' + option.recordno,
+      url: 'https://www.mylittlefox.art/v1/enterpriseCredit/' + recordNo,
       header: {
         'content-type': 'application/json' // 默认值
       },
@@ -139,7 +147,7 @@ Page({
       }
     })
     wx.request({
-      url: 'https://www.mylittlefox.art/v1/enterprises/' + option.recordno,
+      url: 'https://www.mylittlefox.art/v1/enterprises/' + recordNo,
       header: {
         'content-type': 'application/json' // 默认值
       },
@@ -149,6 +157,5 @@ Page({
         })
       }
     })
-    }
   }
 });
