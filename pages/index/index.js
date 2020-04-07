@@ -89,7 +89,6 @@ Page({
 
   //事件处理函数
   bindProjectTap: function (e) {
-      console.log(e)
       wx.setStorage({
         key: "projectDetail",
         data: this.data.projects[e.currentTarget.dataset.index]

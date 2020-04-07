@@ -68,6 +68,13 @@
 					"id": -1,
 					"name": "pages/project/project",
 					"pathName": "pages/project/project",
+					"query": "",
+					"scene": null
+				},
+				{
+					"id": -1,
+					"name": "pages/consensus/consensus",
+					"pathName": "pages/consensus/consensus",
 					"scene": null
 				}
 			]

@@ -72,8 +72,11 @@ Page({
       onInit: initChart
     },
     loading:true,
+    show:false,
+    popup: false,
     companys: [],
     projects: [],
+    consensuses:[],
     activeNames: ['0'],
     credit:[],
     basic:[],
@@ -103,11 +106,14 @@ Page({
     wx.getStorage({
       key: 'companyDetail',
       success: function (res) {
+        console.log(res.data.basic)
+        res.data.basic = JSON.parse(res.data.basic);
         _this.setData({
           comp:res.data
         })
       }
     })
+    
 
       setTimeout(function(){
         wx.request({
@@ -120,6 +126,10 @@ Page({
             options.series[0].data = graph.nodes;
             options.series[0].links = graph.links;
             chart.setOption(options);
+            res.data.riskComp.forEach(item=>{
+              var desc = "该企业参与投标共计" + item[1][2] + "次，与" + _this.data.comp.short_name + "共同参与" + item[1][1] + "次。"
+              item.push(desc);
+            })
             _this.setData({
               companys: res.data.riskComp,
               projects: res.data.riskProject,
@@ -128,9 +138,35 @@ Page({
           }
         });
       },1000)
-    if (option.recordNo){
+    this.getConsensusData(option.id)
+    if (option.recordNo!=0){
       this.getKexinData(option.recordNo);
     }
+  },
+
+  getConsensusData(id){
+    var _this = this;
+    wx.request({
+      url: 'https://www.mylittlefox.art/api/EDU/getConsensus?id='+id,
+      header: {
+        'content-type': 'application/json' // 默认值
+      },
+      success(res) {
+        _this.setData({
+          consensuses: res.data.consensus,
+        })
+      }
+    })
+  },
+
+  bindConsensusTap(e) {
+    wx.setStorage({
+      key: "consensusDetail",
+      data: this.data.consensuses[e.currentTarget.dataset.index]
+    })
+    wx.navigateTo({
+      url: '../consensus/consensus'
+    })
   },
 
   getKexinData(recordNo){
@@ -142,19 +178,30 @@ Page({
       },
       success(res) {
         _this.setData({
+          show:true,
           credit: res.data[0]
         })
       }
     })
+  },
+
+  getProjectDetail(e){
     wx.request({
-      url: 'https://www.mylittlefox.art/v1/enterprises/' + recordNo,
+      url: 'https://www.mylittlefox.art/api/EDU/searchProject?keyword=' + e.currentTarget.dataset.title,
       header: {
         'content-type': 'application/json' // 默认值
       },
       success(res) {
-        _this.setData({
-          basic: res.data[0]
-        })
+        if(res.data.projects){
+          console.log(res.data.projects)
+          wx.setStorage({
+            key: "projectDetail",
+            data: res.data.projects[0]
+          })
+          wx.navigateTo({
+            url: '../project/project'
+          })
+        }
       }
     })
   }

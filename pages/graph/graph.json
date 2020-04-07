@@ -9,6 +9,7 @@
     "van-tabs": "@vant/weapp/tabs/index",
     "van-rate": "@vant/weapp/rate/index",
     "van-loading": "@vant/weapp/loading/index",
-    "van-card": "@vant/weapp/card/index"
+    "van-card": "@vant/weapp/card/index",
+    "van-popup": "@vant/weapp/popup/index"
   }
 }

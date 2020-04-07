@@ -3,6 +3,7 @@
     "pages/index/index",
     "pages/graph/graph",
     "pages/project/project",
+    "pages/consensus/consensus",
     "pages/logs/logs"
   ],
   "window": {

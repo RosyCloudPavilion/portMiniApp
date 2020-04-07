@@ -1,13 +1,11 @@
-// pages/project/project.js
-var util = require('../../utils/util.js');  
+// pages/consensus/consensus.js
 Page({
 
   /**
    * 页面的初始数据
    */
   data: {
-    project:{},
-    activeNames: ['0'],
+    consensus:{}
   },
 
   /**
@@ -16,29 +14,13 @@ Page({
   onLoad: function (options) {
     var _this = this;
     wx.getStorage({
-      key: 'projectDetail',
+      key: 'consensusDetail',
       success: function (res) {
-        console.log(res.data)
-        if (res.data.publishTime){
-          var time = new Date();
-          time.setTime(Number(res.data.publishTime))
-          res.data.publishTime = util.formatTime(time)
-        }else{
-          res.data.publishTime = "无"
-        }
-        var relatestr = res.data.related_comp.replace(/'/g, '"');
-        res.data.related_comp = JSON.parse(relatestr);
         _this.setData({
-          project: res.data
+          consensus: res.data
         })
       }
     })
-  },
-
-  onChange(event) {
-    this.setData({
-      activeNames: event.detail
-    });
   },
 
   /**
