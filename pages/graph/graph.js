@@ -1,5 +1,6 @@
 import * as echarts from '../../ec-canvas/echarts';
 let chart = null;
+let comp_id = null;
 var categories = [{ name: "企业" }, { name: "人" }, { name: "风险" }, { name: "招投标项目" }, { name: "产品" }];
 let options = {
   title: {
@@ -26,7 +27,6 @@ let options = {
       links: [],
       categories: categories,
       roam: true,
-      focusNodeAdjacency: true,
       itemStyle: {
         normal: {
           borderColor: '#fff',
@@ -63,6 +63,12 @@ function initChart(canvas, width, height, dpr) {
     devicePixelRatio: dpr // 像素
   });
   canvas.setChart(chart);
+  //当点击节点时进行跳转到其他企业或产品页面
+  chart.on('click', function (params) {
+      wx.navigateTo({
+        url: '../link/link?source='+comp_id+'&target='+params.data.id
+      })
+  });
   return chart;
 }
 
@@ -73,7 +79,6 @@ Page({
     },
     loading:true,
     show:false,
-    popup: false,
     companys: [],
     projects: [],
     consensuses:[],
@@ -84,6 +89,7 @@ Page({
     active: 0,
     comp:{}
   },
+
 
   onChange(event) {
     this.setData({
@@ -103,6 +109,7 @@ Page({
 
   onLoad: function (option) {
     var _this = this;
+    comp_id  = option.id
     wx.getStorage({
       key: 'companyDetail',
       success: function (res) {

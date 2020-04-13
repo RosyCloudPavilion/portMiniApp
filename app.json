@@ -2,6 +2,7 @@
   "pages": [
     "pages/index/index",
     "pages/graph/graph",
+    "pages/link/link",
     "pages/project/project",
     "pages/consensus/consensus",
     "pages/logs/logs"

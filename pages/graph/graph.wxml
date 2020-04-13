@@ -14,11 +14,11 @@
     </van-card>
    <scroll-view>
     <van-collapse value="{{ activeNames }}" bind:change="onChange">
-      <van-collapse-item title="风险合作企业" name="1">
+      <van-collapse-item title="合作企业评估" name="1">
         <van-cell title="企业名称" value="风险类型及概率" />
         <van-cell title="{{item[0]}}" label="{{item[2]}}" value="{{item[1][0]}}" wx:for="{{ companys }}" />
       </van-collapse-item>
-      <van-collapse-item title="风险投标项目" name="2">
+      <van-collapse-item title="投标项目评估" name="2">
         <van-cell title="项目名称" value="风险程度" />
         <van-cell wx:for="{{ projects }}" title="{{item[0]}}" value="{{item[1]}}" data-title="{{item[0]}}" bindtap="getProjectDetail"/>
       </van-collapse-item>
@@ -110,4 +110,3 @@
     </van-collapse>
   </van-tab>
 </van-tabs>
-<van-popup show="{{ popup }}" >{{consensusPopup}}</van-popup>

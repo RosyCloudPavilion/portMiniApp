@@ -1,0 +1,36 @@
+<van-row>
+  <van-col span="12"><van-card class="card"
+      desc="{{'综合风险指数'+source[2]}}"
+      title="{{source[0]}}">
+      <view  class="price" slot="price">
+        <p>投标项目数</p>
+      </view>
+      <view class="num" slot="num">
+        <p>{{source[1]}}</p>
+      </view>
+</van-card></van-col>
+<van-col span="12"><van-card class="card"
+      title="{{target[0]}}">
+      <view  class="price" slot="price">
+        <p>投标项目数</p>
+      </view>
+      <view class="num" slot="num">
+        <p>{{target[1]}}</p>
+      </view>
+</van-card></van-col>
+</van-row>
+
+   <scroll-view>
+    <van-collapse value="{{ activeNames }}" bind:change="onChange">
+      <van-collapse-item title="共同投标项目" name="1">
+        <van-cell title="项目名称" value="风险程度" />
+        <van-cell wx:for="{{ projects }}" title="{{item[1]}}" value="{{item[8]}}" data-title="{{item[1]}}" bindtap="getProjectDetail"/>
+      </van-collapse-item>
+    </van-collapse>
+    <view class="load" hidden="{{!loading}}">
+    <van-loading color="#1989fa" />
+    </view>
+    <view class="echart">
+      <ec-canvas id="mychart-dom-bar" type="2d" canvas-id="mychart-bar" ec="{{ ec }}"></ec-canvas>
+    </view>
+  </scroll-view> 
