@@ -26,7 +26,16 @@
         <van-cell title="项目名称" value="风险程度" />
         <van-cell wx:for="{{ projects }}" title="{{item[1]}}" value="{{item[8]}}" data-title="{{item[1]}}" bindtap="getProjectDetail"/>
       </van-collapse-item>
+      <van-collapse-item title="关联路径" name="2" value="{{pathsLen}}">
+        <van-cell title="路径长度" value="路径详情" />
+        <van-cell wx:for="{{ pathsList }}" title="{{item.len}}" value="{{item.path}}" value-class="value"/>
+      </van-collapse-item>
     </van-collapse>
+    <view class="hop"> 
+    <van-button class="button" plain="{{hopIndex!=2?true:false}}" type="primary" bindtap="hop" data-hop="2" size="small">二度关系</van-button>
+    <van-button class="button" plain="{{hopIndex!=3?true:false}}" type="primary" bindtap="hop" data-hop="3" size="small">三度关系</van-button>
+    <van-button class="button" plain="{{hopIndex!=4?true:false}}" type="primary" bindtap="hop" data-hop="4" size="small">四度关系</van-button>
+    </view>
     <view class="load" hidden="{{!loading}}">
     <van-loading color="#1989fa" />
     </view>

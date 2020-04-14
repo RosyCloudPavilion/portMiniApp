@@ -1,6 +1,8 @@
 import * as echarts from '../../ec-canvas/echarts';
 let chart = null;
 let comp_id = null;
+let source = null;
+let target =null;
 var categories = [{ name: "企业" }, { name: "人" }, { name: "风险" }, { name: "招投标项目" }, { name: "产品" }];
 let chart_option = {
   title: {
@@ -87,13 +89,21 @@ Page({
     projects: [],
     activeNames: [],
     source: ['','',''],
-    target:{}
+    target:{},
+    hopIndex:'4'
   },
 
   onChange(event) {
     this.setData({
       activeNames: event.detail
     });
+  },
+
+  hop(e){
+    this.setData({
+      hopIndex: e.currentTarget.dataset.hop
+    });
+    this.getCorre(e.currentTarget.dataset.hop)
   },
   /**
    * 生命周期函数--监听页面加载
@@ -111,27 +121,46 @@ Page({
       }
     })
 
-    setTimeout(function () {
-      wx.request({
-        url: 'https://www.mylittlefox.art/api/EDU/getCorrelation?source=' + options.source + '&target=' + options.target,
-        header: {
-          'content-type': 'application/json' // 默认值
-        },
-        success(res) {
-          const graph = res.data;
-          chart_option.series[0].data = graph.nodes;
-          chart_option.series[0].links = graph.links;
-          chart.setOption(chart_option);
+    source = options.source;
+    target = options.target;
 
-          _this.setData({
-            projects: res.data.riskProject,
-            source: res.data.source,
-            target: res.data.target,
-            loading: false
-          })
-        }
-      })
+    setTimeout(function () {
+      _this.getCorre('4')
     }, 1000)
+  },
+
+  getCorre(hop){
+    var _this=this;
+    wx.request({
+      url: 'https://www.mylittlefox.art/api/EDU/getCorrelation?source=' + source + '&target=' + target + '&hop='+hop,
+      header: {
+        'content-type': 'application/json' // 默认值
+      },
+      success(res) {
+        const graph = res.data;
+        chart_option.series[0].data = graph.nodes;
+        chart_option.series[0].links = graph.links;
+        chart.setOption(chart_option);
+
+
+        var pathsList = []
+        res.data.pathsList.forEach(item => {
+          pathsList.push({
+            len: item.length - 1,
+            path: item.join("--")
+          })
+        })
+        console.log(pathsList)
+        _this.setData({
+          projects: res.data.riskProject,
+          source: res.data.source,
+          target: res.data.target,
+          pathsLen: res.data.pathsList.length + '条',
+          pathsList: pathsList,
+          loading: false
+        })
+      }
+    })
   },
 
   getProjectDetail(e) {
