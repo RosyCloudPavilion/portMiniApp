@@ -12,22 +12,36 @@
         <p>{{comp.risk!=null?comp.risk:'暂无'}}</p>
       </view>
     </van-card>
+   <p class="block">风险预警信息</p> 
+    <view class="loads" hidden="{{!loads}}">
+    <van-loading color="#1989fa" />
+    </view>
+   <van-cell-group wx:if="{{!loads}}">
+    <van-cell wx:for="{{desc}}" title="{{item}}"/>
+  </van-cell-group>
+   <p class="block">风险预警详情</p> 
    <scroll-view>
     <van-collapse value="{{ activeNames }}" bind:change="onChange">
       <van-collapse-item title="合作企业评估" name="1">
         <van-cell title="企业名称" value="风险类型及概率" />
-        <van-cell title="{{item[0]}}" label="{{item[2]}}" value="{{item[1][0]}}" wx:for="{{ companys }}" />
+        <van-cell title="{{item[0]}}" label="{{item[2]}}" value="{{item[1][0]}}" wx:for="{{ companys }}" bindtap="getCorrelation" data-name="{{item[0]}}"/>
       </van-collapse-item>
       <van-collapse-item title="投标项目评估" name="2">
         <van-cell title="项目名称" value="风险程度" />
         <van-cell wx:for="{{ projects }}" title="{{item[0]}}" value="{{item[1]}}" data-title="{{item[0]}}" bindtap="getProjectDetail"/>
       </van-collapse-item>
+      <van-collapse-item title="业务经营评估" name="3">
+        <van-cell title="投融项目评估" is-link bindtap="toTourong"/>
+        <van-cell title="关联股东评估" is-link bindtap="toHolder"/>
+      </van-collapse-item>
     </van-collapse>
-    <view class="load" hidden="{{!loading}}">
-    <van-loading color="#1989fa" />
+    
+    <view class="load">
+    <!-- <van-loading color="#1989fa" /> -->
+    <van-button icon="cluster-o" type="info" size="small" bind:click="toVisible">查看可视化分析</van-button>
     </view>
-    <view class="echart">
-      <ec-canvas id="mychart-dom-bar" type="2d" canvas-id="mychart-bar" ec="{{ ec }}"></ec-canvas>
+    <view class="echart" style="{{loading?'margin-left:50000rpx':'margin-left:0px'}}">
+      <ec-canvas id="mychart-dom-bar" type="2d" canvas-id="mychart-bar" ec="{{ ec }}" ></ec-canvas>
     </view>
   </scroll-view> 
 </van-tab>

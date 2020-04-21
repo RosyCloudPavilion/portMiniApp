@@ -4,7 +4,10 @@
     "pages/graph/graph",
     "pages/link/link",
     "pages/project/project",
+    "pages/event/event",
     "pages/consensus/consensus",
+    "pages/holder/holder",
+    "pages/tourong/tourong",
     "pages/logs/logs"
   ],
   "window": {

@@ -47,6 +47,11 @@
   font-size: 35rpx;
 }
 
+.time{
+  float: right;
+  font-size: 25rpx;
+}
+
 .card{
   margin-top: 40rpx;
   display: block;
@@ -54,4 +59,16 @@
 
 .card_desc{
   white-space: pre-line;
+}
+
+.pcomp{
+  display: block;
+  width: 100%;
+}
+
+.pcomp_title{
+  color:#1e50a2; 
+  display: block;
+  width: 100%;
+  font-weight: bold;
 }

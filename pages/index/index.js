@@ -6,6 +6,8 @@ Page({
   data: {
     comps: [],
     comps_origin:[],
+    events: [],
+    events_origin: [],
     projects:[],
     projects_origin:[],
     defaultComp:
@@ -39,6 +41,29 @@ Page({
       })
     }
   },
+
+  onSearchEvent(e) {
+    var events = [];
+    if (e.detail != null) {
+      this.data.events_origin.forEach(item => {
+        if (item.title) {
+          if (item.title.indexOf(e.detail) != -1) {
+            events.push(item);
+          }
+        }
+      })
+      this.setData({
+        events: events
+      })
+    }
+    else {
+      this.setData({
+        events: this.data.events_origin
+      })
+    }
+  },
+
+  
 
   onSearchProject(e){
     var _this=this;
@@ -77,12 +102,8 @@ Page({
   //事件处理函数
   bindViewTap: function (e) {
     if (e.target.dataset.id){
-      wx.setStorage({
-        key: "companyDetail",
-        data: this.data.comps[e.currentTarget.dataset.index]
-      })
       wx.navigateTo({
-        url: '../graph/graph?recordNo=' + e.target.dataset.recordno + '&id=' + e.target.dataset.id
+        url: '../graph/graph?recordNo=' + e.target.dataset.recordno + '&id=' + e.target.dataset.id + '&index=' +e.currentTarget.dataset.index 
       })
     }
   },
@@ -94,13 +115,25 @@ Page({
         data: this.data.projects[e.currentTarget.dataset.index]
       })
       wx.navigateTo({
-        url: '../project/project'
+        url: '../project/project?id='+e.currentTarget.dataset.id
       })
+  },
+
+  //事件处理函数
+  bindEventTap: function (e) {
+    wx.setStorage({
+      key: "eventDetail",
+      data: this.data.events[e.currentTarget.dataset.index]
+    })
+    wx.navigateTo({
+      url: '../event/event?id=' + e.currentTarget.dataset.id
+    })
   },
 
   onLoad: function () {
     this.getCompany();
     this.getProject();
+    this.getEvent();
   },
 
   getCompany:function(){
@@ -115,6 +148,29 @@ Page({
         _this.setData({
           comps: res.data.comps,
           comps_origin: res.data.comps,
+        })
+        wx.setStorage({
+          key: "companyDetail",
+          data: res.data.comps
+        })
+      }
+    })
+  },
+
+  getEvent: function () {
+    var _this = this;
+    wx.request({
+      url: 'https://www.mylittlefox.art/api/EDU/getEvent',
+      header: {
+        'content-type': 'application/json' // 默认值
+      },
+      success(res) {
+        res.data.events.forEach((item,index)=>{
+          res.data.events[index].related_comp = JSON.parse(res.data.events[index].related_comp)
+        })
+        _this.setData({
+          events: res.data.events,
+          events_origin: res.data.events,
         })
       }
     })

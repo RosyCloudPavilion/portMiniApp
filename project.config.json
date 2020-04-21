@@ -84,6 +84,34 @@
 					"pathName": "pages/link/link",
 					"query": "source=2&target=77",
 					"scene": null
+				},
+				{
+					"id": -1,
+					"name": "pages/graph/graph",
+					"pathName": "pages/graph/graph",
+					"query": "source=2&target=77",
+					"scene": null
+				},
+				{
+					"id": -1,
+					"name": "pages/holder/holder",
+					"pathName": "pages/holder/holder",
+					"query": "id=2",
+					"scene": null
+				},
+				{
+					"id": -1,
+					"name": "pages/tourong/tourong",
+					"pathName": "pages/tourong/tourong",
+					"query": "id=2",
+					"scene": null
+				},
+				{
+					"id": -1,
+					"name": "pages/project/project",
+					"pathName": "pages/project/project",
+					"query": "id=708",
+					"scene": null
 				}
 			]
 		}

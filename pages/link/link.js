@@ -90,7 +90,8 @@ Page({
     activeNames: [],
     source: ['','',''],
     target:{},
-    hopIndex:'4'
+    hopIndex:'4',
+    lineIndex:'ALL'
   },
 
   onChange(event) {
@@ -103,7 +104,20 @@ Page({
     this.setData({
       hopIndex: e.currentTarget.dataset.hop
     });
-    this.getCorre(e.currentTarget.dataset.hop)
+    this.getCorre(this.data.hopIndex,this.data.lineIndex)
+  },
+
+  line(e) {
+    if (e.currentTarget.dataset.line == this.data.lineIndex){
+      this.setData({
+        lineIndex: 'ALL'
+      });
+    }else{
+      this.setData({
+        lineIndex: e.currentTarget.dataset.line
+      });
+    }
+    this.getCorre(this.data.hopIndex, this.data.lineIndex)
   },
   /**
    * 生命周期函数--监听页面加载
@@ -125,14 +139,14 @@ Page({
     target = options.target;
 
     setTimeout(function () {
-      _this.getCorre('4')
+      _this.getCorre('4','ALL')
     }, 1000)
   },
 
-  getCorre(hop){
+  getCorre(hop,line){
     var _this=this;
     wx.request({
-      url: 'https://www.mylittlefox.art/api/EDU/getCorrelation?source=' + source + '&target=' + target + '&hop='+hop,
+      url: 'https://www.mylittlefox.art/api/EDU/getCorrelation?source=' + source + '&target=' + target + '&hop='+hop+'&line_type='+line,
       header: {
         'content-type': 'application/json' // 默认值
       },

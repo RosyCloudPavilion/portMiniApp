@@ -1,4 +1,3 @@
-// pages/project/project.js
 import * as echarts from '../../ec-canvas/echarts';
 let chart = null;
 let comp_id = null;
@@ -28,7 +27,7 @@ let options = {
       links: [],
       categories: categories,
       roam: true,
-      focusNodeAdjacency:true, 
+      focusNodeAdjacency: true,
       itemStyle: {
         normal: {
           borderColor: '#fff',
@@ -74,7 +73,7 @@ function initChart(canvas, width, height, dpr) {
   return chart;
 }
 
-var util = require('../../utils/util.js');  
+import Notify from '@vant/weapp/notify/notify';
 Page({
 
   /**
@@ -85,8 +84,8 @@ Page({
       onInit: initChart
     },
     loading: true,
-    project:{},
-    activeNames: [],
+    event:{},
+    activeNames: ['0'],
   },
 
   /**
@@ -95,31 +94,23 @@ Page({
   onLoad: function (options) {
     var _this = this;
     wx.getStorage({
-      key: 'projectDetail',
+      key: 'eventDetail',
       success: function (res) {
         console.log(res.data)
-        if (res.data.publishTime){
-          var time = new Date();
-          time.setTime(Number(res.data.publishTime))
-          res.data.publishTime = util.formatTime(time)
-        }else{
-          res.data.publishTime = "无"
-        }
-        var relatestr = res.data.related_comp.replace(/'/g, '"');
-        res.data.related_comp = JSON.parse(relatestr);
         _this.setData({
-          project: res.data
+          event: res.data
         })
       }
     })
     setTimeout(function () {
-      _this.getGraph(options.id)},1000);
+      _this.getGraph(options.id)
+    }, 1000);
   },
 
   getGraph: function (id) {
     var _this = this;
     wx.request({
-      url: 'https://www.mylittlefox.art/api/EDU/getProjectById?id='+id,
+      url: 'https://www.mylittlefox.art/api/EDU/getEventAnalysisById?id=' + id,
       header: {
         'content-type': 'application/json' // 默认值
       },
@@ -136,6 +127,26 @@ Page({
     this.setData({
       loading: !this.data.loading,
     })
+  },
+
+
+  bindCompanyTap(e){
+    if (e.currentTarget.dataset.id!=0){
+      wx.getStorage({
+        key: 'companyDetail',
+        success: function (res) {
+          res.data.forEach((item, index) => {
+            if (item.id == e.currentTarget.dataset.id) {
+              wx.navigateTo({
+                url: '../graph/graph?recordNo=' + null + '&id=' + e.currentTarget.dataset.id + '&index=' + index
+              })
+            }
+          })
+        }
+      })
+    }else{
+      Notify({ type: 'warning', message: '暂未收录该企业', duration: 1000});
+    }
   },
 
   onChange(event) {

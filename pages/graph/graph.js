@@ -78,16 +78,20 @@ Page({
       onInit: initChart
     },
     loading:true,
+    loads: true,
     show:false,
     companys: [],
     projects: [],
+    nodes:[],
+    links:[],
     consensuses:[],
     activeNames: ['0'],
     credit:[],
     basic:[],
     activeBasic:['1','2'],
     active: 0,
-    comp:{}
+    comp:{},
+    desc:[],
   },
 
 
@@ -107,16 +111,27 @@ Page({
     
   },
 
+  getCorrelation(e){
+    var name = e.currentTarget.dataset.name;
+    var id;
+    this.data.nodes.forEach(item=>{
+      if(item.name==name){
+        wx.navigateTo({
+          url: '../link/link?source=' + comp_id + '&target=' + item.id
+        })
+      }
+    })
+  },
+
   onLoad: function (option) {
     var _this = this;
     comp_id  = option.id
     wx.getStorage({
       key: 'companyDetail',
       success: function (res) {
-        console.log(res.data.basic)
-        res.data.basic = JSON.parse(res.data.basic);
+        res.data[option.index].basic = JSON.parse(res.data[option.index].basic);
         _this.setData({
-          comp:res.data
+          comp: res.data[option.index]
         })
       }
     })
@@ -137,10 +152,17 @@ Page({
               var desc = "该企业参与投标共计" + item[1][2] + "次，与" + _this.data.comp.short_name + "共同参与" + item[1][1] + "次。"
               item.push(desc);
             })
+
+            var desc = [];
+            desc.push("该企业与" + res.data.riskComp[0][0] + ", " + res.data.riskComp[1][0]+"在多个项目中共同投标");
+            desc.push("该企业参与的" + res.data.riskProject[0][0] + ", " + res.data.riskProject[1][0] + "项目中企业关联性较高");
             _this.setData({
               companys: res.data.riskComp,
               projects: res.data.riskProject,
-              loading: false
+              nodes:res.data.nodes,
+              links:res.data.links,
+              loads:false,
+              desc:desc,
             })
           }
         });
@@ -149,6 +171,12 @@ Page({
     if (option.recordNo!=0){
       this.getKexinData(option.recordNo);
     }
+  },
+
+  toVisible(){
+    this.setData({
+      loading: !this.data.loading,
+    })
   },
 
   getConsensusData(id){
@@ -210,6 +238,18 @@ Page({
           })
         }
       }
+    })
+  },
+
+  toTourong(){
+    wx.navigateTo({
+      url: '../tourong/tourong?id=' + comp_id
+    })
+  },
+
+  toHolder(){
+    wx.navigateTo({
+      url: '../holder/holder?id=' + comp_id
     })
   }
 });

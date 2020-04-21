@@ -24,10 +24,17 @@ canvas{
 }
 
 .load{
-  height: 100rpx;
+  height: 60rpx;
   text-align: center;
-  margin-top: 100rpx;
+  margin-top: 60rpx;
 }
+
+.loads{
+  height: 60rpx;
+  text-align: center;
+  margin: 30rpx 0rpx;
+}
+
 
 .price{
   color: #b55233;
@@ -46,4 +53,12 @@ canvas{
 
 .card_desc{
   white-space: pre-line;
+}
+
+.block{
+  font-size: 28rpx;
+  margin: 30rpx;
+  color: #1357c5;
+  display: block;
+  font-weight: bold;
 }

@@ -21,3 +21,16 @@
   color: #b55233;
   text-align: center;
 }
+
+.load{
+  height: 60rpx;
+  text-align: center;
+  margin-top: 60rpx;
+}
+
+.echart{  
+    display: block;
+    height: 1500rpx;
+    margin-top: 40rpx;
+    width: 100%;
+}

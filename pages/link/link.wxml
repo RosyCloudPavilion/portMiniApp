@@ -36,6 +36,11 @@
     <van-button class="button" plain="{{hopIndex!=3?true:false}}" type="primary" bindtap="hop" data-hop="3" size="small">三度关系</van-button>
     <van-button class="button" plain="{{hopIndex!=4?true:false}}" type="primary" bindtap="hop" data-hop="4" size="small">四度关系</van-button>
     </view>
+    <view class="hop"> 
+    <van-button class="button" plain="{{lineIndex!='BID_FOR'?true:false}}" type="warning" bindtap="line" data-line="BID_FOR" size="small">投标关系</van-button>
+    <van-button class="button" plain="{{lineIndex!='OWNED_BY'?true:false}}" type="warning" bindtap="line" data-line="OWNED_BY" size="small">股东关系</van-button>
+    <van-button class="button" plain="{{lineIndex!='INVEST_IN'?true:false}}" type="warning" bindtap="line" data-line="INVEST_IN" size="small">投资关系</van-button>
+    </view>
     <view class="load" hidden="{{!loading}}">
     <van-loading color="#1989fa" />
     </view>

@@ -29,9 +29,12 @@
           placeholder="请输入招投标项目名等关键词"
           bind:search="onSearchProject"
         />
-        <van-card class="card" wx:for="{{ projects }}" wx:for-item="project" data-index="{{index}}" bindtap="bindProjectTap" title="{{project.title}}">
+        <van-card class="card" wx:for="{{ projects }}" wx:for-item="project" data-index="{{index}}" data-id="{{project.id}}" bindtap="bindProjectTap" title="{{project.title}}">
         <view class="card_desc" slot="desc">
-          <p>投标企业：{{project.relatedComp}}</p>
+          <p class="pcomp">\n</p>
+          <p class="pcomp_title">投标企业:</p>
+          <p>{{project.relatedComp}}</p>
+          <p class="pcomp">\n</p>
         </view>
         <view  class="price" slot="price">
           <p>{{project.risk!=""?'综合风险指数':''}}</p>
@@ -41,7 +44,30 @@
         </view>
       </van-card>
       </van-tab>
-  </van-tabs>
+
+      <van-tab title="查事件">
+         <van-search
+          input-align="center"
+          placeholder="请输入热点事件名等关键词"
+          bind:search="onSearchEvent"
+        />
+          <van-card class="card" wx:for="{{ events }}" wx:for-item="event" data-index="{{index}}" data-id="{{event.id}}" bindtap="bindEventTap" title="{{event.title}}">
+        <view class="card_desc" slot="desc">
+          <p class="pcomp">\n</p>
+          <p class="pcomp_title">关联企业:</p>
+          <p class="pcomp">\n</p>
+          <p class="pcomp" wx:for="{{event.related_comp}}">{{item.name}}</p>
+          <p class="pcomp">\n</p>
+        </view>
+        <view  class="price" slot="price">
+          <p>{{event.source}}</p>
+        </view>
+        <view class="time" slot="num">
+          <p>{{event.time}}</p>
+        </view>
+      </van-card>
+      </van-tab>
+  </van-tabs>  
 </view>
 
 
