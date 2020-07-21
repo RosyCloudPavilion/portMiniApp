@@ -19,7 +19,7 @@ Page({
   getRongzi: function (id) {
     var _this = this;
     wx.request({
-      url: 'https://www.mylittlefox.art/api/EDU/getRongzi?id=' + id,
+      url: 'https://www.mylittlefox.art/api/port/getRongzi?id=' + id,
       header: {
         'content-type': 'application/json' // 默认值
       },
@@ -34,7 +34,7 @@ Page({
   getTouzi: function (id) {
     var _this = this;
     wx.request({
-      url: 'https://www.mylittlefox.art/api/EDU/getTouzi?id=' + id,
+      url: 'https://www.mylittlefox.art/api/port/getTouzi?id=' + id,
       header: {
         'content-type': 'application/json' // 默认值
       },

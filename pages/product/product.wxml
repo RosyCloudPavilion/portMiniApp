@@ -1,25 +1,32 @@
-<van-tabs class="my-class" active="{{ active }}" swipeable="true" sticky="true" bind:change="onTab">
+<van-tabs active="{{ active }}" swipeable="true" sticky="true" bind:change="onTab">
   <van-tab title="风险预警">
        <van-card class="card"
       desc="描述信息"
       title="{{comp.name}}"
-      desc="{{comp.kind}}"
+      desc="{{comp.comp_name}}"
       thumb="{{comp.img}}">
-      <view  class="price" slot="price">
+      <!-- <view  class="price" slot="price">
         <p>{{comp.risk!=""?'综合风险指数':''}}</p>
       </view>
       <view class="num" style="{{comp.risk>60?'color:red':'color:green'}}" slot="num">
         <p>{{comp.risk!=null?comp.risk:'暂无'}}</p>
-      </view>
+      </view> -->
     </van-card>
-    
-   <!-- <p class="block">风险预警信息</p> 
+   <p class="block">风险预警信息</p> 
     <view class="loads" hidden="{{!loads}}">
     <van-loading color="#1989fa" />
     </view>
    <van-cell-group wx:if="{{!loads}}">
-    <van-cell wx:for="{{desc}}" title="{{item}}"/>
-  </van-cell-group> -->
+    <van-cell wx:for="{{riskList}}" title="{{item.risk}}" label="{{item.path}}"/>
+  </van-cell-group>
+   <p class="block">查验批次列表</p> 
+       <van-cell-group wx:if="{{!loads}}">
+    <van-cell wx:for="{{batch}}" title="{{item.number}}" data-index="{{item}}"  bindtap="bindEventTap">
+    <view  style="{{item.status==0?'color:grey':(item.status==1?'color:green':'color:red')}}">
+        <p>{{item.status==0?"待查验":(item.status==1?"查验通过":"查验不通过")}}</p>
+      </view>
+      </van-cell>
+  </van-cell-group>
    <!-- <p class="block">风险预警详情</p>  -->
    <scroll-view>
     <!-- <van-collapse value="{{ activeNames }}" bind:change="onChange">
@@ -36,49 +43,18 @@
         <van-cell title="关联股东评估" is-link bindtap="toHolder"/>
       </van-collapse-item>
     </van-collapse> -->
-    <p class="block">关联风险预警</p> 
-       <van-cell-group wx:if="{{!loads}}">
-    <van-cell wx:for="{{riskList}}" title="{{item.risk}}" label="{{item.path}}"/>
-  </van-cell-group>
-   <p class="block">产品列表</p> 
-    <view class="loads" hidden="{{!loads}}">
-    <van-loading color="#1989fa" />
-    </view>
-   <van-card class="card" wx:for="{{ product }}" wx:for-item="comp" wx:key="id" data-index="{{comp}}" data-id="{{comp.id}}" data-graph="{{comp.id}}" bindtap="bindProductTap"
-      desc="描述信息"
-      title="{{comp.name}}"
-      desc="{{comp.comp_name}}"
-      thumb="{{comp.img}}">
-      <view  class="price" slot="price">
-        <p>{{comp.risk!=null?'综合风险指数':''}}</p>
-      </view>
-      <view class="num" style="{{comp.risk>60?'color:red':'color:green'}}" slot="num">
-        <p>{{comp.risk!=null?comp.risk:''}}</p>
-      </view>
-    </van-card>
+    
     <view class="load">
     <!-- <van-loading color="#1989fa" /> -->
     <van-button icon="cluster-o" type="info" size="small" bind:click="toVisible">查看可视化分析</van-button>
-     <van-button class="shareBtn" icon="friends-o" type="primary" size="small" bind:click="share">生成报告</van-button>
+    <van-button class="shareBtn" icon="friends-o" type="primary" size="small" open-type="share">转发给好友</van-button>
     </view>
     <view class="echart" style="{{loading?'margin-left:50000rpx':'margin-left:0px'}}">
       <ec-canvas id="mychart-dom-bar" type="2d" canvas-id="mychart-bar" ec="{{ ec }}" ></ec-canvas>
     </view>
   </scroll-view> 
 </van-tab>
-  <van-tab title="基本信息">
- <van-cell title="企业类型" value="{{basic.USER_TYPE}}" />
-       <van-cell title="生产企业地址" value="{{basic.ADDRESS}}" />
-        <van-cell title="企业名称" value="{{basic.COM_NAME}}" />
-         <van-cell title="工商注册号" value="{{basic.REG_NO}}" />
-          <van-cell title="法人代表" value="{{basic.LAW_PERSON}}" />
-           <van-cell title="注册资本" value="{{basic.REG_CAPITAL}}" />
-            <van-cell title="注册地址" value="{{basic.REG_ADDRESS}}" />
-             <van-cell title="登记机关" value="{{basic.REG_BRANCH}}" />
-              <van-cell title="成立日期" value="{{basic.FOUND_DATE}}" />
-               <van-cell title="经营期限" value="{{basic.VALID_PERIOD}}" />
-                <van-cell title="年报公示状态" value="{{basic.ANNUAL_CHECK}}" />
-  </van-tab>
+
   <van-tab title="舆情信息">
     <van-card class="card" wx:for="{{ consensuses }}" wx:for-item="consensus" data-index="{{index}}" bindtap="bindConsensusTap" title="{{consensus.title}}">
         <view  class="price" slot="price">
@@ -146,6 +122,3 @@
     </van-collapse>
   </van-tab>
 </van-tabs>
-    <view class="echart2">
-      <ec-canvas id="mychart-dom-bar" type="2d" canvas-id="mychart-bar" ec="{{ ec2 }}" ></ec-canvas>
-    </view>

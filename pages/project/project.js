@@ -119,7 +119,7 @@ Page({
   getGraph: function (id) {
     var _this = this;
     wx.request({
-      url: 'https://www.mylittlefox.art/api/EDU/getProjectById?id='+id,
+      url: 'https://www.mylittlefox.art/api/port/getProjectById?id='+id,
       header: {
         'content-type': 'application/json' // 默认值
       },

@@ -1,7 +1,9 @@
 import * as echarts from '../../ec-canvas/echarts';
 let chart = null;
+let chart2 = null;
 let comp_id = null;
-var categories = [{ name: "企业" }, { name: "人" }, { name: "风险" }, { name: "招投标项目" }, { name: "产品" }];
+let comp_name = null;
+var categories = [{ name: "物流商" }, { name: "产品" }, { name: "牧场" }, { name: "收货企业" }, { name: "生产商" }, { name: "报关企业" }, { name: "乳制品" }, { name: "员工" }];
 let options = {
   title: {
     text: '风险知识图谱',
@@ -39,10 +41,10 @@ let options = {
         position: '',
         formatter: '{b}'
       },
-      lineStyle: {
-        color: 'source',
-        curveness: 0.3
-      },
+      // lineStyle: {
+      //   color: 'source',
+      //   curveness: 0.3
+      // },
       emphasis: {
         lineStyle: {
           width: 10
@@ -52,6 +54,12 @@ let options = {
         repulsion: 80,
         gravity: 0.01,
         edgeLength: [50, 200]
+      },
+      tooltip: {
+        trigger: 'item',
+        formatter: function (params) {
+          return params.name;
+        }
       }
     }
   ]
@@ -64,12 +72,28 @@ function initChart(canvas, width, height, dpr) {
   });
   canvas.setChart(chart);
   //当点击节点时进行跳转到其他企业或产品页面
-  chart.on('click', function (params) {
-      wx.navigateTo({
-        url: '../link/link?source='+comp_id+'&target='+params.data.id
-      })
-  });
+  // chart.on('click', function (params) {
+  //     wx.navigateTo({
+  //       url: '../link/link?source='+comp_id+'&target='+params.data.id
+  //     })
+  // });
   return chart;
+}
+
+function initChart2(canvas, width, height, dpr) {
+  chart2 = echarts.init(canvas, null, {
+    width: '450',
+    height: '375',
+    devicePixelRatio: dpr // 像素
+  });
+  canvas.setChart(chart2);
+  //当点击节点时进行跳转到其他企业或产品页面
+  // chart.on('click', function (params) {
+  //     wx.navigateTo({
+  //       url: '../link/link?source='+comp_id+'&target='+params.data.id
+  //     })
+  // });
+  return chart2;
 }
 
 Page({
@@ -77,7 +101,11 @@ Page({
     ec: {
       onInit: initChart
     },
+    ec2: {
+      onInit: initChart2
+    },
     loading:true,
+    loading2: true,
     loads: true,
     show:false,
     companys: [],
@@ -94,6 +122,15 @@ Page({
     desc:[],
   },
 
+
+  onResize(res) {
+    //ec2.resize({ width: '1200px', height: '375px'});
+    // this.setData({
+    //   loading2: false,
+    // })
+    console.log(res.size.windowWidth) // 新的显示区域宽度
+    console.log(res.size.windowHeight) // 新的显示区域高度
+  },
 
   onChange(event) {
     this.setData({
@@ -123,53 +160,88 @@ Page({
     })
   },
 
+  onShareAppMessage(){
+    if (res.from === 'button') {
+      // 来自页面内转发按钮
+      console.log(res.target)
+    }
+    return {
+      title: comp_name,
+      path: '../graph/graph?id=' + comp_id
+    }
+  },
+
   onLoad: function (option) {
     var _this = this;
     comp_id  = option.id
-    wx.getStorage({
-      key: 'companyDetail',
-      success: function (res) {
-        res.data[option.index].basic = JSON.parse(res.data[option.index].basic);
+    // wx.getStorage({
+    //   key: 'companyDetail',
+    //   success: function (res) {
+    //     //res.data[option.index].basic = JSON.parse(res.data[option.index].basic);
+    //     _this.setData({
+    //       comp: res.data[option.index]
+    //     })
+    //   }
+    // })
+    this.getCompDetail(option.id);
+  },
+
+  getCompDetail(id){
+    var _this = this;
+    wx.request({
+      url: 'https://www.mylittlefox.art/api/port/getCompanyById?id=' + id,
+      header: {
+        'content-type': 'application/json' // 默认值
+      },
+      success(res) {
         _this.setData({
-          comp: res.data[option.index]
+          comp: res.data.comps[0]
+        })
+        comp_name = res.data.comps[0].name;
+        setTimeout(function () {
+          _this.getRiskData(res.data.comps[0].id);
+        }, 1000)
+        _this.getConsensusData(res.data.comps[0].id)
+        if (option.recordNo != 0) {
+          _this.getKexinData(res.data.comps[0].recordNo);
+        }
+      }
+    })
+  },
+
+
+
+  getRiskData(id) {
+    var _this = this;
+    wx.request({
+      url: 'https://www.mylittlefox.art/api/port/getRiskByCompanyId?id=' + id,
+      header: {
+        'content-type': 'application/json' // 默认值
+      },
+      success(res) {
+        const graph = res.data;
+        options.series[0].data = graph.nodesList;
+        options.series[0].links = graph.linksList;
+        chart.setOption(options);
+        chart2.setOption(options);
+        if (res.data.pathsList.length==0){
+          res.data.pathsList.push({risk:"暂无"})
+        }
+        _this.setData({
+          loads: false,
+          riskList: res.data.pathsList,
+          product:res.data.productsList
         })
       }
     })
-    
+  },
 
-      setTimeout(function(){
-        wx.request({
-          url: 'https://www.mylittlefox.art/api/EDU/getNodesAndLinksById?id=' + option.id,
-          header: {
-            'content-type': 'application/json' // 默认值
-          },
-          success(res) {
-            const graph = res.data;
-            options.series[0].data = graph.nodes;
-            options.series[0].links = graph.links;
-            chart.setOption(options);
-            res.data.riskComp.forEach(item=>{
-              var desc = "该企业参与投标共计" + item[1][2] + "次，与" + _this.data.comp.short_name + "共同参与" + item[1][1] + "次。"
-              item.push(desc);
-            })
-
-            var desc = [];
-            desc.push("该企业与" + res.data.riskComp[0][0] + ", " + res.data.riskComp[1][0]+"在多个项目中共同投标");
-            desc.push("该企业参与的" + res.data.riskProject[0][0] + ", " + res.data.riskProject[1][0] + "项目中企业关联性较高");
-            _this.setData({
-              companys: res.data.riskComp,
-              projects: res.data.riskProject,
-              nodes:res.data.nodes,
-              links:res.data.links,
-              loads:false,
-              desc:desc,
-            })
-          }
-        });
-      },1000)
-    this.getConsensusData(option.id)
-    if (option.recordNo!=0){
-      this.getKexinData(option.recordNo);
+  //事件处理函数
+  bindProductTap: function (e) {
+    if (e.target.dataset.id) {
+      wx.navigateTo({
+        url: '../product/product?graph=' + e.target.dataset.graph + '&id=' + e.target.dataset.id + '&index=' + JSON.stringify(e.currentTarget.dataset.index)
+      })
     }
   },
 
@@ -177,12 +249,26 @@ Page({
     this.setData({
       loading: !this.data.loading,
     })
+   // chart2.resize({  height: '375' });
+  },
+
+  share(){
+    wx.setClipboardData({
+      data: 'https://www.mylittlefox.art/api/port/getPDF?id=1 '+ "纽仕兰有限公司风险分析报告，点击链接查看【来自智慧口岸包打听】",
+      success(res) {
+        wx.getClipboardData({
+          success(res) {
+            console.log(res.data) // data
+          }
+        })
+      }
+    })
   },
 
   getConsensusData(id){
     var _this = this;
     wx.request({
-      url: 'https://www.mylittlefox.art/api/EDU/getConsensus?id='+id,
+      url: 'https://www.mylittlefox.art/api/port/getConsensus?id='+id,
       header: {
         'content-type': 'application/json' // 默认值
       },
@@ -218,11 +304,23 @@ Page({
         })
       }
     })
+
+    wx.request({
+      url: 'https://www.mylittlefox.art/v1/enterprises/' + recordNo,
+      header: {
+        'content-type': 'application/json' // 默认值
+      },
+      success(res) {
+        _this.setData({
+          basic: res.data[0]
+        })
+      }
+    })
   },
 
   getProjectDetail(e){
     wx.request({
-      url: 'https://www.mylittlefox.art/api/EDU/searchProject?keyword=' + e.currentTarget.dataset.title,
+      url: 'https://www.mylittlefox.art/api/port/searchProject?keyword=' + e.currentTarget.dataset.title,
       header: {
         'content-type': 'application/json' // 默认值
       },

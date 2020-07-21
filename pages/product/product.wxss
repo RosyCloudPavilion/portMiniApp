@@ -1,4 +1,4 @@
-/**index.wxss**/
+/* pages/product/product.wxss *//**index.wxss**/
 ec-canvas {
     width: 100%;
     height: 100%;
@@ -21,12 +21,6 @@ canvas{
     height: 1500rpx;
     margin-top: 40rpx;
     width: 100%;
-}
-
-.echart2{  
-    display: block;
-    height: 750rpx;
-    width: 1200rpx;
 }
 
 .load{
@@ -71,11 +65,4 @@ canvas{
 
 .shareBtn{
   margin-left: 40rpx;
-}
-
-@media (min-width: 480px) {
-  /* 仅在 480px 或更宽的屏幕上生效的样式规则 */
-  .my-class {
-    display: none;
-  }
 }

@@ -1,6 +1,6 @@
 <!--pages/project/project.wxml-->
 <van-notify id="van-notify" />
-<p class="title">{{event.title}}</p>
+<!-- <p class="title">{{event.title}}</p>
 <p class="score">来源: {{event.source}}</p>
 <p class="score">时间: {{event.time}}</p>
    <van-collapse value="{{ activeNames }}" bind:change="onChange">
@@ -9,11 +9,27 @@
       </van-collapse-item>
     </van-collapse>
 <view class="load">
-    <!-- <van-loading color="#1989fa" /> -->
+     <van-loading color="#1989fa" /> 
     <van-button icon="cluster-o" type="info" size="small" bind:click="toVisible">查看可视化分析</van-button>
     </view>
     <view class="echart" style="{{loading?'position:absolute;margin-left:50000rpx':'margin-left:0rpx'}}">
       <ec-canvas id="mychart-dom-bar" type="2d" canvas-id="mychart-bar" ec="{{ ec }}" ></ec-canvas>
       </view>
-<text class="content">{{event.content}}</text>
+<text class="content">{{event.content}}</text> -->
+
+<van-cell title="批次号" value="{{event.number}}" />
+<van-cell title="产品名称" value="{{event.product_name}}" />
+<van-cell title="查验状态">
+<view  style="{{event.status==0?'color:grey':(event.status==1?'color:green':'color:red')}}">
+        <p>{{event.status==0?"待查验":(event.status==1?"查验通过":"查验不通过")}}</p>
+      </view>
+</van-cell>
+<view class="load" hidden="{{event.status}}">
+  <van-button type="info" bind:click="bindCamera">拍摄标签进行识别</van-button>
+</view>
+<view class="load" hidden="{{event.status}}">
+  <van-button type="primary">查验通过</van-button>
+  <van-button type="danger" style="margin-left:20px">查验不合格</van-button>
+</view>
+<image wx:if="{{cameraImg}}" class="camera" src="{{cameraImg}}"/>
 

@@ -1,5 +1,6 @@
 {
   "usingComponents": {
+    "ec-canvas": "../../ec-canvas/ec-canvas",
     "van-row": "@vant/weapp/row/index",
     "van-col": "@vant/weapp/col/index",
     "van-image": "@vant/weapp/image/index",

@@ -18,7 +18,7 @@ Page({
   getHolders: function (id) {
     var _this = this;
     wx.request({
-      url: 'https://www.mylittlefox.art/api/EDU/getHolder?id='+id,
+      url: 'https://www.mylittlefox.art/api/port/getHolder?id='+id,
       header: {
         'content-type': 'application/json' // 默认值
       },

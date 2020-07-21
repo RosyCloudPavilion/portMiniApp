@@ -146,7 +146,7 @@ Page({
   getCorre(hop,line){
     var _this=this;
     wx.request({
-      url: 'https://www.mylittlefox.art/api/EDU/getCorrelation?source=' + source + '&target=' + target + '&hop='+hop+'&line_type='+line,
+      url: 'https://www.mylittlefox.art/api/port/getCorrelation?source=' + source + '&target=' + target + '&hop='+hop+'&line_type='+line,
       header: {
         'content-type': 'application/json' // 默认值
       },
@@ -179,7 +179,7 @@ Page({
 
   getProjectDetail(e) {
     wx.request({
-      url: 'https://www.mylittlefox.art/api/EDU/searchProject?keyword=' + e.currentTarget.dataset.title,
+      url: 'https://www.mylittlefox.art/api/port/searchProject?keyword=' + e.currentTarget.dataset.title,
       header: {
         'content-type': 'application/json' // 默认值
       },

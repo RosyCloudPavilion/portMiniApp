@@ -85,6 +85,7 @@ Page({
     },
     loading: true,
     event:{},
+    camera:'',
     activeNames: ['0'],
   },
 
@@ -93,24 +94,27 @@ Page({
    */
   onLoad: function (options) {
     var _this = this;
-    wx.getStorage({
-      key: 'eventDetail',
-      success: function (res) {
-        console.log(res.data)
-        _this.setData({
-          event: res.data
-        })
-      }
+    // wx.getStorage({
+    //   key: 'eventDetail',
+    //   success: function (res) {
+    //     console.log(res.data)
+    //     _this.setData({
+    //       event: res.data
+    //     })
+    //   }
+    // })
+    this.setData({
+      event:JSON.parse(options.batch)
     })
-    setTimeout(function () {
-      _this.getGraph(options.id)
-    }, 1000);
+    // setTimeout(function () {
+    //   _this.getGraph(options.id)
+    // }, 1000);
   },
 
   getGraph: function (id) {
     var _this = this;
     wx.request({
-      url: 'https://www.mylittlefox.art/api/EDU/getEventAnalysisById?id=' + id,
+      url: 'https://www.mylittlefox.art/api/port/getEventAnalysisById?id=' + id,
       header: {
         'content-type': 'application/json' // 默认值
       },
@@ -119,6 +123,23 @@ Page({
         options.series[0].data = graph.nodesList;
         options.series[0].links = graph.linksList;
         chart.setOption(options);
+      }
+    })
+  },
+
+  bindCamera(){
+    var _this=this;
+    wx.chooseImage({
+      count: 1,
+      sizeType: ['original', 'compressed'],
+      sourceType: ['album', 'camera'],
+      success(res) {
+        // tempFilePath可以作为img标签的src属性显示图片
+        const tempFilePaths = res.tempFilePaths
+        console.log(tempFilePaths)
+        _this.setData({
+          cameraImg: res.tempFilePaths[0]
+        })
       }
     })
   },

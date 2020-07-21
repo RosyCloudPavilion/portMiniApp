@@ -10,6 +10,7 @@
 		"minified": true,
 		"newFeature": true,
 		"coverView": true,
+		"nodeModules": true,
 		"autoAudits": false,
 		"showShadowRootInWxmlPanel": true,
 		"scopeDataCheck": false,
@@ -20,13 +21,12 @@
 			"ignore": [],
 			"disablePlugins": [],
 			"outputPath": ""
-		},
-		"nodeModules": true
+		}
 	},
 	"compileType": "miniprogram",
 	"libVersion": "2.10.3",
-	"appid": "wx701a0405c5599dfa",
-	"projectname": "eduApp",
+	"appid": "wx5a7e18cbda07907e",
+	"projectname": "portMiniApp",
 	"debugOptions": {
 		"hidedInDevtools": []
 	},
@@ -112,6 +112,17 @@
 					"pathName": "pages/project/project",
 					"query": "id=708",
 					"scene": null
+				},
+				{
+					"id": 8,
+					"name": "other",
+					"pathName": "pages/graph/graph",
+					"query": "graph=125795",
+					"scene": 1037,
+					"referrerInfo": {
+						"appId": "wx57eba905d4328d2a",
+						"extraData": "{\"from\":\"供应链安全管理\"}"
+					}
 				}
 			]
 		}
