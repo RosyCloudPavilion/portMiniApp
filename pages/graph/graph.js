@@ -232,6 +232,7 @@ Page({
           riskList: res.data.pathsList,
           product:res.data.productsList
         })
+        _this.save();
       }
     })
   },
@@ -254,7 +255,7 @@ Page({
 
   share(){
     wx.setClipboardData({
-      data: 'https://www.mylittlefox.art/api/port/getPDF?id=1 '+ "纽仕兰有限公司风险分析报告，点击链接查看【来自智慧口岸包打听】",
+      data: comp_name + "风险分析报告，点击链接查看【来自智慧口岸包打听】: " + 'https://www.mylittlefox.art/api/port/getPDF?id=' + comp_id ,
       success(res) {
         wx.getClipboardData({
           success(res) {
@@ -263,6 +264,40 @@ Page({
         })
       }
     })
+  },
+
+  save() {
+    const ecComponent = this.selectComponent('#mychart-dom-bar');
+    // 先保存图片到临时的本地文件，然后存入系统相册
+    ecComponent.canvasToTempFilePath({
+      success: res => {
+        console.log("tempFilePath:", res.tempFilePath)
+
+        wx.uploadFile({
+          url: 'https://www.mylittlefox.art/api/port/upload',
+            filePath: res.tempFilePath,
+            name: 'file',
+            formData: {
+              'id': comp_id
+            },
+            success(res) {
+              const data = res.data
+              //do something
+            }
+        })
+        //存入系统相册
+        wx.saveImageToPhotosAlbum({
+          filePath: res.tempFilePath || '',
+          success: res => {
+            console.log("success", res)
+          },
+          fail: res => {
+            console.log("fail", res)
+          }
+        })
+      },
+      fail: res => console.log(res)
+    });
   },
 
   getConsensusData(id){
